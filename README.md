@@ -30,10 +30,12 @@ My model has two inputs and two outputs. It takes an image as input (minimap pla
 ## Results
 
 ##### MoveToBeacon mini-game
+![](https://raw.githubusercontent.com/tonybeltramelli/Supervised-End-to-end-Weight-sharing-for-StarCraft-II/master/beacon_agent_demo.gif)
 * Gif demo: [beacon_agent_demo.gif](beacon_agent_demo.gif)
 * Limitations: the agent performs really well in this game but sometimes cannot move to rightmost positions on the screen. This is probably because the (x, y) coordinates predicted by the model are screen ratios from [0.0, 1.0] which are then transformed to screen coordinates. My guess is that somewhere along the way, the value is rounded to the nearest integer below its current value.
 
 ##### CollectMineralShards mini-game
+![](https://raw.githubusercontent.com/tonybeltramelli/Supervised-End-to-end-Weight-sharing-for-StarCraft-II/master/mineral_agent_demo.gif)
 * Gif demo: [mineral_agent_demo.gif](mineral_agent_demo.gif)
 * Limitations: the agent is performing poorly in this game. Both characters are attracted to each other instead of actively searching for minerals. My guess is that the model actually predict the mean of the mineral cluster position instead of the coordinates of the nearest mineral. This could explain why the characters are always sprinting to a position near the board's center.
 
