@@ -47,7 +47,7 @@ python -m pysc2.bin.agent --map MoveToBeacon --agent TrainedAgent.TrainedAgent
 python -m pysc2.bin.agent --map CollectMineralShards --agent TrainedAgent.TrainedAgent
 ```
 
-Gather your own data:
+I have made my datasets available *(dataset_beacon.zip, dataset_mineral.zip)* but you can gather your own data as follows:
 ```sh
 mkdir dataset_beacon
 mkdir dataset_mineral
