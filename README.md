@@ -21,7 +21,7 @@ You can read [Niel's great post](https://njustesen.com/2018/01/16/getting-starte
 
 ## Goal
 
-I had absolutely zero knowledge of StarCraft when I started this workshop so I could not input a ton of prior in my agent. To make things a little easier, I used the mini games as a test bed instead of the complex maps of the full game. Reinforcement Learning for StarCraft turned out to be more complex than anticipated so my final solution is leveraging Supervised Learning to train the agent. The training dataset is gathered by recording moves of scripted agents provided by the DeepMind PySC2 package.
+I had absolutely zero knowledge about StarCraft when I started this workshop so I could not input a ton of prior in my agent. To make things a little easier, I used the mini games as a test bed instead of the complex maps of the full game. Reinforcement Learning for StarCraft turned out to be more complex than anticipated so my final solution is leveraging Supervised Learning to train the agent. The training dataset is gathered by recording moves of scripted agents provided in the [DeepMind PySC2 package](https://github.com/deepmind/pysc2/blob/master/pysc2/agents/scripted_agent.py).
 
 My model has two inputs and two outputs. It takes an image as input (minimap player_relative) together with a one-hot encoded vector representing all the available actions for a given game state. The model is then designed to predict policy: both the next action to take, and the (x, y) coordinates of the screen where to click. The model is trained end-to-end to perform both classification (next action) and regression (screen coordinates). The weights of the convolutional layers learning visual features are shared.
 
@@ -42,7 +42,7 @@ My model has two inputs and two outputs. It takes an image as input (minimap pla
 Run my pre-trained models in *./bin*:
 ```sh
 # play the game with trained agent
-# load the correct pre-trained model self.model.load("agent_beacon") in TrainedAgent.py (yeah I know)
+# load the correct pre-trained model by changing self.model.load("agent_beacon") in TrainedAgent.py (yeah I know...)
 python -m pysc2.bin.agent --map MoveToBeacon --agent TrainedAgent.TrainedAgent
 python -m pysc2.bin.agent --map CollectMineralShards --agent TrainedAgent.TrainedAgent
 ```
@@ -51,8 +51,8 @@ Gather your own data:
 ```sh
 mkdir dataset_beacon
 mkdir dataset_mineral
-# produce training data using scripted agents
-# change variable GAME = "mineral|beacon" in ScriptedAgent.py (yeah that's quite dirty)
+# generate training data using scripted agents
+# change variable GAME = "mineral|beacon" in ScriptedAgent.py (no argument sorry...)
 python -m pysc2.bin.agent --map MoveToBeacon --agent ScriptedAgent.ScriptedAgent --max_agent_steps 10000
 python -m pysc2.bin.agent --map CollectMineralShards --agent ScriptedAgent.ScriptedAgent --max_agent_steps 10000
 ```
