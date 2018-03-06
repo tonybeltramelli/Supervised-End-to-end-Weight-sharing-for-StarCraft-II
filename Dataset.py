@@ -14,7 +14,7 @@ class Dataset:
         self.output_params = []
 
     def load(self, path):
-        print "Loading data..."
+        print("Loading data...")
         for f in os.listdir(path):
             if f.find(".npy") != -1:
                 file_name = f[:f.find(".npy")]
@@ -50,7 +50,7 @@ class Dataset:
         self.output_actions = np.array(self.output_actions)
         self.output_params = np.array(self.output_params)
 
-        print "input observations: ", np.shape(self.input_observations)
-        print "input available actions ", np.shape(self.input_available_actions)
-        print "output actions: ", np.shape(self.output_actions)
-        print "output params: ", np.shape(self.output_params)
+        print("input observations: ", np.shape(self.input_observations))
+        print("input available actions ", np.shape(self.input_available_actions))
+        print("output actions: ", np.shape(self.output_actions))
+        print("output params: ", np.shape(self.output_params))

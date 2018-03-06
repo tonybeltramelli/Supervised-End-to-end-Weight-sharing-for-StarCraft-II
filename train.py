@@ -13,8 +13,8 @@ np.random.seed(1234)
 argv = sys.argv[1:]
 
 if len(argv) < 1:
-    print "Error: not enough argument supplied:"
-    print "train.py <name>"
+    print("Error: not enough argument supplied:")
+    print("train.py <name>")
     exit(0)
 else:
     name = argv[0]
