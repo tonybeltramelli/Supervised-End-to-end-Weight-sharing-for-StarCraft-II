@@ -3,6 +3,7 @@ __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 import numpy as np
 import cv2
 
+
 class Utils:
 
     @staticmethod
@@ -23,16 +24,21 @@ class Utils:
                 pixel = feature * (max_target_value / amax)
 
                 if feature == 0:
+                    # yellow
                     img[x][y][0] = pixel
                     img[x][y][1] = pixel
                 elif feature == 1:
+                    # green
                     img[x][y][1] = pixel
                 elif feature == 2:
+                    # blue
                     img[x][y][2] = pixel
                 elif feature == 3:
+                    # cyan
                     img[x][y][1] = pixel
                     img[x][y][2] = pixel
                 elif feature == 4:
+                    # red
                     img[x][y][0] = pixel
         return img
 
