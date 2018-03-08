@@ -7,9 +7,9 @@ from pysc2.lib import actions
 from pysc2.lib import features
 
 from End2EndWeightSharingModel import *
-from Utils import *
 
 np.random.seed(1234)
+_PLAYER_RELATIVE = features.SCREEN_FEATURES.player_relative.index
 
 
 class TrainedAgent(base_agent.BaseAgent):
@@ -24,9 +24,10 @@ class TrainedAgent(base_agent.BaseAgent):
     def step(self, obs):
         super(TrainedAgent, self).step(obs)
 
-        observation = obs.observation["minimap"][5]
-        observation = Utils.feature_array_to_img(observation, max_target_value=1.0)
-        observation = Utils.resize_squared_img(observation, 84)
+        observation = np.expand_dims(obs.observation["screen"][_PLAYER_RELATIVE], axis=3)
+        # observation = obs.observation["minimap"][5]
+        # observation = Utils.feature_array_to_img(observation, max_target_value=1.0)
+        # observation = Utils.resize_squared_img(observation, 84)
         # Utils.show(observation)
 
         output_size = len(actions.FUNCTIONS)

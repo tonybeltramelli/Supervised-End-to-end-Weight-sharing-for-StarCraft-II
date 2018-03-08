@@ -4,7 +4,6 @@ __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 import sys
 import numpy as np
 
-from Utils import *
 from Dataset import *
 from End2EndWeightSharingModel import *
 

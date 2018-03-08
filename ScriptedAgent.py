@@ -9,8 +9,6 @@ from pysc2.agents import base_agent
 from pysc2.lib import actions
 from pysc2.lib import features
 
-from Utils import *
-
 GAME = "roaches"
 
 _PLAYER_RELATIVE = features.SCREEN_FEATURES.player_relative.index
@@ -34,9 +32,10 @@ class ScriptedAgent(base_agent.BaseAgent):
     def step(self, obs):
         super(ScriptedAgent, self).step(obs)
 
-        observation = obs.observation["minimap"][5]
-        observation = Utils.feature_array_to_img(observation, max_target_value=1.0)
-        observation = Utils.resize_squared_img(observation, 84)
+        observation = np.expand_dims(obs.observation["screen"][_PLAYER_RELATIVE], axis=3)
+        # observation = obs.observation["minimap"][5]
+        # observation = Utils.feature_array_to_img(observation, max_target_value=1.0)
+        # observation = Utils.resize_squared_img(observation, 84)
         # Utils.show(observation)
 
         if GAME == "beacon":
@@ -72,6 +71,9 @@ class ScriptedAgent(base_agent.BaseAgent):
                             closest, min_dist = p, dist
                     action = actions.FUNCTIONS.Move_screen.id
                     params = [[0], closest]
+            else:
+                action = actions.FUNCTIONS.select_army.id
+                params = [[0]]
         elif GAME == "roaches":
             if _ATTACK_SCREEN in obs.observation["available_actions"]:
                 player_relative = obs.observation["screen"][_PLAYER_RELATIVE]
@@ -90,9 +92,6 @@ class ScriptedAgent(base_agent.BaseAgent):
             else:
                 action = _NO_OP
                 params = [_NOT_QUEUED]
-        else:
-            action = actions.FUNCTIONS.select_army.id
-            params = [[0]]
 
         self.states.append(np.array([observation, obs.observation["available_actions"], action, params]))
 
