@@ -2,7 +2,7 @@ __author__ = 'Tony Beltramelli - www.tonybeltramelli.com'
 # scripted agents taken from PySC2, credits to DeepMind
 # https://github.com/deepmind/pysc2/blob/master/pysc2/agents/scripted_agent.py
 
-import numpy
+import numpy as np
 import uuid
 
 from pysc2.agents import base_agent
@@ -66,7 +66,7 @@ class ScriptedAgent(base_agent.BaseAgent):
                     player = [int(player_x.mean()), int(player_y.mean())]
                     closest, min_dist = None, None
                     for p in zip(neutral_x, neutral_y):
-                        dist = numpy.linalg.norm(numpy.array(player) - numpy.array(p))
+                        dist = np.linalg.norm(np.array(player) - np.array(p))
                         if not min_dist or dist < min_dist:
                             closest, min_dist = p, dist
                     action = actions.FUNCTIONS.Move_screen.id
@@ -82,7 +82,7 @@ class ScriptedAgent(base_agent.BaseAgent):
                     action = _NO_OP
                     params = [_NOT_QUEUED]
                 else:
-                    index = numpy.argmax(roach_y)
+                    index = np.argmax(roach_y)
                     target = [roach_x[index], roach_y[index]]
                     action = _ATTACK_SCREEN
                     params = [_NOT_QUEUED, target]

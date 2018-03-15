@@ -13,12 +13,13 @@ np.random.seed(1234)
 
 argv = sys.argv[1:]
 
-if len(argv) < 1:
+if len(argv) < 2:
     print("Error: not enough argument supplied:")
-    print("train.py <name>")
+    print("train.py <name> <nb_epochs>")
     exit(0)
 else:
     name = argv[0]
+    epochs = int(argv[1])
 
 dataset = Dataset()
 dataset.load("dataset_{}".format(name))
@@ -35,5 +36,5 @@ if os.path.isfile("bin/agent_{}.h5".format(name)) and os.path.isfile("bin/agent_
 else:
     model.init_model(image_input_shape=image_input_shape, actions_input_shape=actions_input_shape, output_size=output_size)
 
-model.fit(dataset.input_observations, dataset.input_available_actions, dataset.output_actions, dataset.output_params)
+model.fit(dataset.input_observations, dataset.input_available_actions, dataset.output_actions, dataset.output_params, epochs)
 model.save("agent_{}".format(name))

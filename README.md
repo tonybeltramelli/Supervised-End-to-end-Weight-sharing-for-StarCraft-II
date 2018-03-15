@@ -62,7 +62,7 @@ python -m pysc2.bin.agent --map CollectMineralShards --agent ScriptedAgent.Scrip
 Train your own model:
 ```sh
 # train the model
-python ./train.py beacon|mineral
+python train.py <beacon|mineral|roaches> <epochs>
 ```
 
 ## Citation
