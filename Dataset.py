@@ -12,6 +12,7 @@ class Dataset:
         self.input_available_actions = []
         self.output_actions = []
         self.output_params = []
+        self.weights = []
 
     def load(self, path):
         print("Loading data...")
@@ -49,8 +50,12 @@ class Dataset:
         self.input_available_actions = np.array(self.input_available_actions)
         self.output_actions = np.array(self.output_actions)
         self.output_params = np.array(self.output_params)
+        self.weights = np.ones(self.output_actions.shape[0])
+        self.weights[self.output_actions[:, 7] == 1.] = 2000
+        self.weights = [self.weights, np.ones(self.output_actions.shape[0])]
 
         print("input observations: ", np.shape(self.input_observations))
         print("input available actions ", np.shape(self.input_available_actions))
         print("output actions: ", np.shape(self.output_actions))
         print("output params: ", np.shape(self.output_params))
+        print("weights: ", np.shape(self.weights))
