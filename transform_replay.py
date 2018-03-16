@@ -65,8 +65,7 @@ class ReplayEnv:
         """Make sure the replay isn't corrupt, and is worth looking at."""
         if (info.HasField("error") or
                     info.base_build != ping.base_build or  # different game version
-                    info.game_duration_loops < 1000 or
-                    len(info.player_info) != 2):
+                    info.game_duration_loops < 1000):
             # Probably corrupt, or just not interesting.
             return False
 #   for p in info.player_info:
