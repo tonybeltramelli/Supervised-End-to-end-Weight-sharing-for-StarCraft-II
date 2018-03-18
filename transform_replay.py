@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
-from pysc2.lib import features, point
 from absl import app, flags
-from pysc2.env.environment import TimeStep, StepType
-from pysc2 import run_configs
 from s2clientprotocol import sc2api_pb2 as sc_pb
+from pysc2 import run_configs
+from pysc2.lib import actions, features, point
+from pysc2.env.environment import TimeStep, StepType
+
 import importlib
 
 FLAGS = flags.FLAGS
@@ -21,7 +22,7 @@ class ReplayEnv:
                  screen_size_px=(64, 64),
                  minimap_size_px=(64, 64),
                  discount=1.,
-                 step_mul=1):
+                 step_mul=8):
 
         self.agent = agent
         self.discount = discount
@@ -91,10 +92,13 @@ class ReplayEnv:
 
             self._episode_steps += self.step_mul
 
-            step = TimeStep(step_type=self._state, reward=0,
-                            discount=discount, observation=agent_obs)
+            step = TimeStep(step_type=self._state, reward=0, discount=discount, observation=agent_obs)
 
-            self.agent.step(step, obs.actions)
+            # Assume that there is 0 or 1 action by frame.
+            if obs.actions:
+                self.agent.step(step, _features.reverse_action(obs.actions[0]))
+            else:
+                self.agent.step(step, actions.FunctionCall(actions.FUNCTIONS.no_op.id, []))
 
             if obs.player_result:
                 break
