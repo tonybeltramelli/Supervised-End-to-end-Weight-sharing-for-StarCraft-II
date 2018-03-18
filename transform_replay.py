@@ -19,8 +19,8 @@ class ReplayEnv:
                  replay_file_path,
                  agent,
                  player_id=1,
-                 screen_size_px=(64, 64),
-                 minimap_size_px=(64, 64),
+                 screen_size_px=(84, 84),
+                 minimap_size_px=(84, 84),
                  discount=1.,
                  step_mul=8):
 
