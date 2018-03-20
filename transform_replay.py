@@ -5,6 +5,8 @@ from s2clientprotocol import sc2api_pb2 as sc_pb
 from pysc2 import run_configs
 from pysc2.lib import actions, features, point
 from pysc2.env.environment import TimeStep, StepType
+from os.path import basename, splitext
+import numpy as np
 
 import importlib
 
@@ -31,6 +33,8 @@ class ReplayEnv:
         self.run_config = run_configs.get()
         self.sc2_proc = self.run_config.start()
         self.controller = self.sc2_proc.controller
+
+        self.replay_name = basename(splitext(replay_file_path)[0])
 
         replay_data = self.run_config.replay_data(replay_file_path)
         ping = self.controller.ping()
@@ -104,6 +108,8 @@ class ReplayEnv:
                 break
 
             self._state = StepType.MID
+
+        np.save("dataset_{}/{}".format("roaches", self.replay_name), np.array(self.agent.getStates()))
 
 
 def main(unused):
