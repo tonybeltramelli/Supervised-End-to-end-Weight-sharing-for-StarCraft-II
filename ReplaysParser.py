@@ -6,14 +6,17 @@ from pysc2 import run_configs
 from pysc2.lib import actions, features, point
 from pysc2.env.environment import TimeStep, StepType
 from os.path import basename, splitext
+import os
+from glob import glob
 import numpy as np
 
 import importlib
 
 FLAGS = flags.FLAGS
-flags.DEFINE_string("replay", None, "Path to a replay file.")
+flags.DEFINE_string("replays", None, "Replay files pattern (google glob.glob)")
+flags.DEFINE_string("datadir", "dataset", "Directory in which to put the data of the replays")
 flags.DEFINE_string("agent", None, "Path to an agent.")
-flags.mark_flag_as_required("replay")
+flags.mark_flag_as_required("replays")
 flags.mark_flag_as_required("agent")
 
 class ReplayEnv:
@@ -109,15 +112,31 @@ class ReplayEnv:
 
             self._state = StepType.MID
 
-        np.save("dataset_{}/{}".format("roaches", self.replay_name), np.array(self.agent.getStates()))
+        np.save("{}/{}".format(FLAGS.datadir, self.replay_name), np.array(self.agent.getStates()))
 
 
 def main(unused):
     agent_module, agent_name = FLAGS.agent.rsplit(".", 1)
     agent_cls = getattr(importlib.import_module(agent_module), agent_name)
 
-    G_O_O_D_B_O_Y_E = ReplayEnv(FLAGS.replay, agent_cls())
-    G_O_O_D_B_O_Y_E.start()
+    replays = glob(FLAGS.replays)
+    if not replays:
+        print("No replays found.")
+        return
+
+    print("Replays found:")
+    for r in replays:
+        print(r)
+
+    if not os.path.exists(FLAGS.datadir):
+        print("\nCreating directory {}".format(FLAGS.datadir))
+        os.mkdir(FLAGS.datadir)
+
+    print("\nParsing...")
+    for r in replays:
+        print(r)
+        env = ReplayEnv(r, agent_cls())
+        env.start()
 
 if __name__ == "__main__":
     app.run(main)
