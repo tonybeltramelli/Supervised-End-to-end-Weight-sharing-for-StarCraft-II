@@ -9,7 +9,7 @@ from pysc2.agents import base_agent
 from pysc2.lib import actions
 from pysc2.lib import features
 
-GAME = "beacon"  # beacon/mineral/roaches
+GAME = "roaches"  # beacon/mineral/minerals/roaches
 
 _SCREEN_PLAYER_RELATIVE = features.SCREEN_FEATURES.player_relative.index
 _SCREEN_SELECTED = features.SCREEN_FEATURES.selected.index
@@ -56,6 +56,26 @@ class ScriptedAgent(base_agent.BaseAgent):
                 action = _SELECT_ARMY
                 params = [[0]]
         elif GAME == "mineral":
+            if actions.FUNCTIONS.Move_screen.id in obs.observation["available_actions"]:
+                player_relative = obs.observation["screen"][_SCREEN_PLAYER_RELATIVE]
+                neutral_y, neutral_x = (player_relative == 3).nonzero()
+                player_y, player_x = (player_relative == 1).nonzero()
+                if not neutral_y.any() or not player_y.any():
+                    action = _NO_OP
+                    params = []
+                else:
+                    player = [int(player_x.mean()), int(player_y.mean())]
+                    closest, min_dist = None, None
+                    for p in zip(neutral_x, neutral_y):
+                        dist = np.linalg.norm(np.array(player) - np.array(p))
+                        if not min_dist or dist < min_dist:
+                            closest, min_dist = p, dist
+                    action = _MOVE_SCREEN
+                    params = [[0], closest]
+            else:
+                action = _SELECT_ARMY
+                params = [[0]]
+        elif GAME == "minerals":
             if actions.FUNCTIONS.Move_screen.id in obs.observation["available_actions"]:
                 player_relative = obs.observation["screen"][_SCREEN_PLAYER_RELATIVE]
                 neutral_y, neutral_x = (player_relative == 3).nonzero()

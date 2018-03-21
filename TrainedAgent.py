@@ -17,8 +17,9 @@ class TrainedAgent(base_agent.BaseAgent):
 
         self.model = End2EndWeightSharingModel()
         # self.model.load("agent_beacon")
-        self.model.load("agent_mineral")
-        # self.model.load("agent_roaches")
+        #self.model.load("agent_mineral")
+        # self.model.load("agent_minerals")
+        self.model.load("agent_roaches")
 
     def step(self, obs):
         super(TrainedAgent, self).step(obs)
