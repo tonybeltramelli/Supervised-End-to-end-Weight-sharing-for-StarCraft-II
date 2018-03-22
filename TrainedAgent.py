@@ -12,20 +12,9 @@ _SCREEN_SELECTED = features.SCREEN_FEATURES.selected.index
 
 
 class TrainedAgent(base_agent.BaseAgent):
-    def __init__(self):
-        base_agent.BaseAgent.__init__(self)
-
-        self.model = End2EndWeightSharingModel()
-        # self.model.load("agent_beacon")
-        #self.model.load("agent_mineral")
-        # self.model.load("agent_minerals")
-        self.model.load("agent_roaches")
-
     def step(self, obs):
         super(TrainedAgent, self).step(obs)
 
-        # we expand dims because keras wants 4 dims for convolutions
-        # observation = np.expand_dims(obs.observation["screen"][_SCREEN_PLAYER_RELATIVE], axis=3)
         screens = [obs.observation["screen"][_SCREEN_PLAYER_RELATIVE],
                    obs.observation["screen"][_SCREEN_SELECTED]]
         observation = np.stack(screens, axis=2)
@@ -65,3 +54,31 @@ class TrainedAgent(base_agent.BaseAgent):
                       self.action_spec.functions[action].args]
 
         return actions.FunctionCall(action, params)
+
+
+class AgentRoaches(TrainedAgent):
+    def __init__(self):
+        base_agent.BaseAgent.__init__(self)
+        self.model = End2EndWeightSharingModel()
+        self.model.load("agent_roaches")
+
+
+class AgentBeacon(TrainedAgent):
+    def __init__(self):
+        base_agent.BaseAgent.__init__(self)
+        self.model = End2EndWeightSharingModel()
+        self.model.load("agent_beacon")
+
+
+class AgentMineral(TrainedAgent):
+    def __init__(self):
+        base_agent.BaseAgent.__init__(self)
+        self.model = End2EndWeightSharingModel()
+        self.model.load("agent_mineral")
+
+
+class AgentMinerals(TrainedAgent):
+    def __init__(self):
+        base_agent.BaseAgent.__init__(self)
+        self.model = End2EndWeightSharingModel()
+        self.model.load("agent_minerals")

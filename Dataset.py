@@ -51,7 +51,7 @@ class Dataset:
         self.output_actions = np.array(self.output_actions)
         self.output_params = np.array(self.output_params)
         self.weights = np.ones(self.output_actions.shape[0])
-        self.weights[self.output_actions[:, 7] == 1.] = 2000
+        # self.weights[self.output_actions[:, 7] == 1.] = 2000
         self.weights = [self.weights, np.ones(self.output_actions.shape[0])]
 
         print("input observations: ", np.shape(self.input_observations))
