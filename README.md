@@ -44,17 +44,27 @@ My model has two inputs and two outputs. It takes an image as input (minimap pla
 Run my pre-trained models in *./bin*:
 ```sh
 # play the game with trained agent
-# load the correct pre-trained model by changing self.model.load("agent_beacon") in TrainedAgent.py (yeah I know...)
-python -m pysc2.bin.agent --map MoveToBeacon --agent TrainedAgent.TrainedAgent
-python -m pysc2.bin.agent --map CollectMineralShards --agent TrainedAgent.TrainedAgent
+python -m pysc2.bin.agent --map MoveToBeacon --agent TrainedAgent.AgentBeacon
+python -m pysc2.bin.agent --map CollectMineralShard --agent TrainedAgent.AgentMineral
+python -m pysc2.bin.agent --map CollectMineralShards --agent TrainedAgent.AgentMinerals
+python -m pysc2.bin.agent --map DefeatRoaches --agent TrainedAgent.DefeatRoaches
 ```
 
-I have made my datasets available *(dataset_beacon.zip, dataset_mineral.zip)* but you can gather your own data as follows:
+You can parse replays as datasets using parseReplays.py
 ```sh
-mkdir dataset_beacon
-mkdir dataset_mineral
+# parse replays
+python parseReplays.py --replays <replayspattern> --agent <observer agent> --datadir <data directory>
+
+# exemples
+python parseReplays.py --replays "D:\StarCraft II\Replays\DefeatRoaches\DefeatRoaches_*.SC2Replay" --agent ObserverAgent.NoNoOp --datadir dataset_roaches
+# default directory is dataset
+python parseReplays.py --replays "D:\StarCraft II\Replays\DefeatRoaches\DefeatRoaches_*.SC2Replay" --agent ObserverAgent.ObserverAgent
+```
+
+Or use Tony's scripted agents to generate data as they play:
+```sh
 # generate training data using scripted agents
-# change variable GAME = "mineral|beacon" in ScriptedAgent.py (no argument sorry...)
+# change variable GAME = "mineral|beacon|roaches" in ScriptedAgent.py (no argument sorry...)
 python -m pysc2.bin.agent --map MoveToBeacon --agent ScriptedAgent.ScriptedAgent --max_agent_steps 10000
 python -m pysc2.bin.agent --map CollectMineralShards --agent ScriptedAgent.ScriptedAgent --max_agent_steps 10000
 ```
