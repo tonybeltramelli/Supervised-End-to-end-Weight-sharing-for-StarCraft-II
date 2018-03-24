@@ -57,14 +57,12 @@ class ScriptedAgent(base_agent.BaseAgent):
                     action = _NO_OP
                     params = []
                 else:
-                    player = [int(player_x.mean()), int(player_y.mean())]
-                    closest, min_dist = None, None
-                    for p in zip(neutral_x, neutral_y):
-                        dist = np.linalg.norm(np.array(player) - np.array(p))
-                        if not min_dist or dist < min_dist:
-                            closest, min_dist = p, dist
                     action = _MOVE_SCREEN
-                    params = [[0], closest]
+                    index_x = np.argmin(neutral_x)
+                    index_y = np.argmin(neutral_y)
+                    index = index_x if neutral_x[index_x] + neutral_y[index_x] < neutral_x[index_y] + neutral_y[index_y] else index_y
+                    target = [neutral_x[index], neutral_y[index]]
+                    params = [[0], target]
             else:
                 action = _SELECT_ARMY
                 params = [[0]]
